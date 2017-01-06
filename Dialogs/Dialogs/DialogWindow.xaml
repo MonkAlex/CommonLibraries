@@ -1,0 +1,34 @@
+﻿<Window x:Class="Dialogs.WPF.DialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Dialogs"
+        xmlns:btn="clr-namespace:Dialogs.Buttons"
+        d:DataContext="{d:DesignInstance local:Dialog, IsDesignTimeCreatable=True}"
+        mc:Ignorable="d"
+        Title="{Binding Title}">
+  <Window.Resources>
+    <ResourceDictionary Source="Controls.xaml"/>
+  </Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <Label Content="{Binding Description}"/>
+    <ItemsControl Grid.Row="1" ItemsSource="{Binding Controls}"/>
+    <ItemsControl Grid.Row="2" 
+                  HorizontalAlignment="Right"
+                  ItemTemplate="{StaticResource ButtonTemplate}" 
+                  ItemsSource="{Binding Buttons}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+    </ItemsControl>
+  </Grid>
+</Window>
