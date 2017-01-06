@@ -9,6 +9,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dialogs", "Dialogs\Dialogs.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dialogs.Example", "Dialogs.Example\Dialogs.Example.csproj", "{93AE60A4-A714-4146-8DE8-132456711F06}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6F64AE1E-612E-420E-86AD-415E98EBFC81}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
