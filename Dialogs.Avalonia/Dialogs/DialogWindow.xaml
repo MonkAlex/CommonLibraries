@@ -1,0 +1,38 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:b="clr-namespace:Dialogs.Buttons;assembly=Dialogs.Avalonia"
+        xmlns:c="clr-namespace:Dialogs.Controls;assembly=Dialogs.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Title}">
+  <Window.DataTemplates>
+    <DataTemplate DataType="{x:Type b:Button}">
+      <Button Content="{Binding Name}"
+              Command="{Binding}"
+              IsDefault="{Binding IsDefault}"
+              IsVisible="{Binding IsVisible}"
+              IsEnabled="{Binding IsEnabled}"/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type c:StringControl}">
+      <Grid ColumnDefinitions="*,Auto,2*">
+        <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+        <TextBlock Grid.Column="1" Text="*" IsVisible="{Binding IsRequired}" Foreground="Red"/>
+        <TextBox Grid.Column="2" Text="{Binding Value}"/>
+      </Grid>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type c:BoolControl}">
+      <CheckBox IsChecked="{Binding Value}" Content="{Binding Name}"/>
+    </DataTemplate>
+  </Window.DataTemplates>
+  <Grid RowDefinitions="Auto,*,Auto">
+    <TextBlock Grid.Row="0" Text="{Binding Description}"/>
+    <ItemsControl Grid.Row="1" Items="{Binding Controls}"/>
+    <ItemsControl Grid.Row="2"
+                  HorizontalAlignment="Right"
+                  Items="{Binding Buttons}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+    </ItemsControl>
+  </Grid>
+</Window>
