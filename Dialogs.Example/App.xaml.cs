@@ -37,7 +37,7 @@ namespace Dialogs.Example
       };
       dialog.Buttons.AddButton(custom);
       var dialogResult = dialog.Show();
-      if (DefaultButtons.CancelButton != (Button)dialogResult)
+      if (DefaultButtons.CancelButton != (Button)dialogResult.Result)
       {
         MessageBox.Show(control.Value);
       }

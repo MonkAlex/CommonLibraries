@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Dialogs.Buttons;
 using Dialogs.WPF;
 
@@ -36,10 +37,10 @@ namespace Dialogs
     public IButtonCollection Buttons { get; }
     public ICollection<IDialogControl> Controls { get; }
 
-    public virtual IButton Show()
+    public virtual async Task<IButton> Show()
     {
       var dialog = new DialogWindow(this);
-      dialog.ShowDialog();
+      await Task.Run(() => dialog.ShowDialog());
       return dialog.ResultButton;
     }
 

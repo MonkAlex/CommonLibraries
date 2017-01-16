@@ -10,7 +10,6 @@ namespace Dialogs.Avalonia.Dialogs
     public DialogWindow()
     {
       this.InitializeComponent();
-      App.AttachDevTools(this);
     }
 
     public DialogWindow(IDialog dialog) : this()

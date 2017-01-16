@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Diagnostics;
 using Avalonia.Logging.Serilog;
 using Avalonia.Themes.Default;
 using Avalonia.Markup.Xaml;
-using Dialogs.Buttons;
 using Dialogs.Controls;
 using Serilog;
 
-namespace Dialogs.Avalonia
+namespace Dialogs.Avalonia.Example
 {
   class App : Application
   {
@@ -26,9 +24,9 @@ namespace Dialogs.Avalonia
     {
       InitializeLogging();
       AppBuilder.Configure<App>()
-        .UsePlatformDetect()
-        .SetupWithoutStarting();
-
+          .UsePlatformDetect()
+          .SetupWithoutStarting();
+      
       var dialog = new SimpleDialog();
       dialog.Buttons.AddCancel();
       dialog.Title = "Example";
@@ -48,7 +46,8 @@ namespace Dialogs.Avalonia
         dialog.Buttons.DefaultButton = dialog.Buttons.SingleOrDefault(b => b.Name == "Ok");
       };
       dialog.Buttons.AddButton(custom);
-      var dialogResult = dialog.Show();
+      var dialogResult = await dialog.Show();
+      var ttt = dialogResult.Name;
     }
 
     public static void AttachDevTools(Window window)

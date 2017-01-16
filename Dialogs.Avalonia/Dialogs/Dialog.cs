@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Dialogs.Avalonia.Dialogs;
 using Dialogs.Buttons;
 
@@ -38,11 +39,10 @@ namespace Dialogs.Avalonia
     public IButtonCollection Buttons { get; }
     public ICollection<IDialogControl> Controls { get; }
 
-    public virtual IButton Show()
+    public virtual async Task<IButton> Show()
     {
       var dialog = new DialogWindow(this);
-      dialog.ShowDialog();
-      App.Current.Run(dialog);
+      await dialog.ShowDialog();
       return dialog.ResultButton;
     }
 
