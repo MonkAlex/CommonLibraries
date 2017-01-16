@@ -46,15 +46,9 @@ namespace Dialogs.Avalonia.Example
         dialog.Buttons.DefaultButton = dialog.Buttons.SingleOrDefault(b => b.Name == "Ok");
       };
       dialog.Buttons.AddButton(custom);
-      var dialogResult = await dialog.Show();
-      var ttt = dialogResult.Name;
-    }
-
-    public static void AttachDevTools(Window window)
-    {
-#if DEBUG
-            DevTools.Attach(window);
-#endif
+      var dialogResult = dialog.Show();
+      control.Value = dialogResult.Name;
+      dialog.Show();
     }
 
     private static void InitializeLogging()

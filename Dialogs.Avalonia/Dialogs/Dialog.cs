@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Input;
+using System.Threading;
+using Avalonia.Threading;
 using Dialogs.Avalonia.Dialogs;
 using Dialogs.Buttons;
 
@@ -39,10 +38,15 @@ namespace Dialogs.Avalonia
     public IButtonCollection Buttons { get; }
     public ICollection<IDialogControl> Controls { get; }
 
-    public virtual async Task<IButton> Show()
+    public virtual IButton Show()
     {
+      CancellationTokenSource source = new CancellationTokenSource();
+      
       var dialog = new DialogWindow(this);
-      await dialog.ShowDialog();
+      dialog.Closed += (sender, args) => source.Cancel();
+      dialog.Show();
+
+      Dispatcher.UIThread.MainLoop(source.Token);
       return dialog.ResultButton;
     }
 

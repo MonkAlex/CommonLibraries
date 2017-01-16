@@ -37,10 +37,10 @@ namespace Dialogs
     public IButtonCollection Buttons { get; }
     public ICollection<IDialogControl> Controls { get; }
 
-    public virtual async Task<IButton> Show()
+    public virtual IButton Show()
     {
       var dialog = new DialogWindow(this);
-      await Task.Run(() => dialog.ShowDialog());
+      dialog.ShowDialog();
       return dialog.ResultButton;
     }
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace Dialogs
 {
@@ -14,6 +13,6 @@ namespace Dialogs
 
     ICollection<IDialogControl> Controls { get; }
 
-    Task<IButton> Show();
+    IButton Show();
   }
 }
