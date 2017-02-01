@@ -21,6 +21,9 @@
     <DataTemplate DataType="{x:Type c:BoolControl}">
       <CheckBox IsChecked="{Binding Value}" Content="{Binding Name}"/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type c:ProgressControl}">
+      <ProgressBar Value="{Binding Value}" Minimum="{Binding MinValue}" Maximum="{Binding MaxValue}"/>
+    </DataTemplate>
   </Window.DataTemplates>
   <Grid RowDefinitions="Auto,*,Auto">
     <TextBlock Grid.Row="0" Text="{Binding Description}"/>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Diagnostics;
@@ -39,6 +40,19 @@ namespace Dialogs.Avalonia.Example
 
         var boolC = new BoolControl() { Name = "Galochka", Value = true };
         dialog.Controls.Add(boolC);
+
+        var p = new ProgressControl() { Name = "Ppp", Value = 66, MinValue = 0, MaxValue = 666 };
+        dialog.Controls.Add(p);
+
+        Task.Run(() =>
+        {
+          while (true)
+          {
+            Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+            p.Value = p.Value + 10;
+            p.MaxValue = p.MaxValue - 10;
+          }
+        });
 
         var custom = new Buttons.Button() { IsDefault = true, Name = "TRA TA TA" };
         custom.OnClick += (o, a) =>

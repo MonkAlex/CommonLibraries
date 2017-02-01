@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Avalonia.Threading;
 
 namespace Dialogs.Controls
 {
@@ -64,7 +65,10 @@ namespace Dialogs.Controls
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+      if (Dispatcher.UIThread.CheckAccess())
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+      else
+        Dispatcher.UIThread.InvokeAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
     }
 
     protected AbstractControl()
