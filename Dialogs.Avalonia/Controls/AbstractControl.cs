@@ -1,17 +1,17 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Avalonia.Threading;
+using ReactiveUI;
 
 namespace Dialogs.Controls
 {
-  public abstract class AbstractControl<T> : IDialogControl<T>
+  public abstract class AbstractControl<T> : ReactiveObject, IDialogControl<T>
   {
     private string name;
     private bool isVisible;
     private bool isEnabled;
     private bool isRequired;
     private T value;
-    public event PropertyChangedEventHandler PropertyChanged;
 
     public string Name
     {
@@ -66,9 +66,9 @@ namespace Dialogs.Controls
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
       if (Dispatcher.UIThread.CheckAccess())
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        this.RaisePropertyChanged(propertyName);
       else
-        Dispatcher.UIThread.InvokeAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+        Dispatcher.UIThread.InvokeAsync(() => this.RaisePropertyChanged(propertyName));
     }
 
     protected AbstractControl()

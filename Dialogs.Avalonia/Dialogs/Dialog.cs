@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Threading;
 using Dialogs.Avalonia.Dialogs;
 using Dialogs.Buttons;
@@ -47,6 +48,13 @@ namespace Dialogs.Avalonia
       dialog.Show();
 
       Dispatcher.UIThread.MainLoop(source.Token);
+      return dialog.ResultButton;
+    }
+
+    public virtual async Task<IButton> ShowAsync()
+    {
+      var dialog = new DialogWindow(this);
+      await dialog.ShowDialog();
       return dialog.ResultButton;
     }
 

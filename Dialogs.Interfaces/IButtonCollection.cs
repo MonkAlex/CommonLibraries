@@ -10,7 +10,7 @@ namespace Dialogs
 
     IButton CancelButton { get; set; }
 
-    event EventHandler<ButtonArgs> Clicked;
+    IObservable<ButtonArgs> Clicked { get; }
 
     void AddButton(IButton button);
     void AddOkCancel();

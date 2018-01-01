@@ -1,5 +1,8 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using ReactiveUI;
+using System.Reactive.Subjects;
 
 namespace Dialogs.Avalonia.Dialogs
 {
@@ -20,7 +23,7 @@ namespace Dialogs.Avalonia.Dialogs
         if (ResultButton == null)
           ResultButton = dialog.Buttons.CancelButton;
       };
-      dialog.Buttons.Clicked += ButtonsOnClicked;
+      dialog.Buttons.Clicked.Subscribe(args => ButtonsOnClicked(this, args));
     }
 
     private void ButtonsOnClicked(object sender, ButtonArgs buttonArgs)

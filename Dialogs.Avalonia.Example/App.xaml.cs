@@ -24,7 +24,6 @@ namespace Dialogs.Avalonia.Example
 
     static void Main(string[] args)
     {
-      InitializeLogging();
       try
       {
         AppBuilder.Configure<App>()
@@ -55,13 +54,13 @@ namespace Dialogs.Avalonia.Example
         });
 
         var custom = new Buttons.Button() { IsDefault = true, Name = "TRA TA TA" };
-        custom.OnClick += (o, a) =>
+        custom.OnClick.Subscribe(a =>
         {
           a.CloseAfterClick = false;
           control.Value += "tu~";
           custom.IsEnabled = false;
           dialog.Buttons.DefaultButton = dialog.Buttons.SingleOrDefault(b => b.Name == "Ok");
-        };
+        });
         dialog.Buttons.AddButton(custom);
         var dialogResult = dialog.Show();
         control.Value = dialogResult.Name;
@@ -72,16 +71,6 @@ namespace Dialogs.Avalonia.Example
       {
         Logger.Error("MainLoop", ex, "Binding produced invalid value for {$ex}", ex);
       }
-    }
-
-    private static void InitializeLogging()
-    {
-#if DEBUG
-      SerilogLogger.Initialize(new LoggerConfiguration()
-          .MinimumLevel.Debug()
-          .WriteTo.RollingFile(outputTemplate: "{Area}: {Message}\r\n", pathFormat: "Debug-{Date}.log")
-          .CreateLogger());
-#endif
     }
   }
 }

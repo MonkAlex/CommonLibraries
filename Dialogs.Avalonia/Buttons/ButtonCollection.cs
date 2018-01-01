@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
+using ReactiveUI;
 
 namespace Dialogs.Buttons
 {
-  public class ButtonCollection : IButtonCollection
+  public class ButtonCollection : ReactiveObject, IButtonCollection
   {
     private readonly ICollection<IButton> buttons = new List<IButton>();
-    public event PropertyChangedEventHandler PropertyChanged;
 
     public IButton DefaultButton
     {
@@ -18,7 +19,7 @@ namespace Dialogs.Buttons
       set
       {
         ChangeDefault(value);
-        OnPropertyChanged();
+        this.RaisePropertyChanged();
       }
     }
 
@@ -28,18 +29,19 @@ namespace Dialogs.Buttons
       set
       {
         ChangeCancel(value);
-        OnPropertyChanged();
+        this.RaisePropertyChanged();
       }
     }
 
-    public event EventHandler<ButtonArgs> Clicked;
+    public IObservable<ButtonArgs> Clicked => clickedSubject;
+    private readonly Subject<ButtonArgs> clickedSubject = new Subject<ButtonArgs>();
 
     public void AddButton(IButton button)
     {
       if (buttons.Contains(button))
         return;
 
-      button.Clicked += (sender, args) => OnClicked(args);
+      button.Clicked.Subscribe(args => clickedSubject.OnNext(args));
 
       if (button.IsDefault)
         ChangeDefault(button);
@@ -62,11 +64,6 @@ namespace Dialogs.Buttons
       AddButton(DefaultButtons.CancelButton);
     }
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
     public IEnumerator<IButton> GetEnumerator()
     {
       return buttons.GetEnumerator();
@@ -80,11 +77,6 @@ namespace Dialogs.Buttons
     public int Count
     {
       get { return buttons.Count; }
-    }
-
-    protected virtual void OnClicked(ButtonArgs e)
-    {
-      Clicked?.Invoke(this, e);
     }
 
     private void ChangeDefault(IButton newButton)

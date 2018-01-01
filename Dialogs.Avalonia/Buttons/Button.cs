@@ -1,82 +1,60 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows.Input;
+using ReactiveUI;
 
 namespace Dialogs.Buttons
 {
-  public class Button : IButton, ICommand
+  public class Button : ReactiveObject, ICommand, IButton
   {
     #region IButton
 
-    private string name;
-    private bool isVisible;
-    private bool isEnabled;
-    private bool isDefault;
-    private bool isCancel;
-    public event PropertyChangedEventHandler PropertyChanged;
-
     public string Name
     {
-      get { return name; }
-      set
-      {
-        name = value;
-        OnPropertyChanged();
-      }
+      get => name;
+      set => this.RaiseAndSetIfChanged(ref name, value);
     }
+
+    private string name;
 
     public bool IsVisible
     {
-      get { return isVisible; }
-      set
-      {
-        isVisible = value;
-        OnPropertyChanged();
-      }
+      get => isVisible;
+      set => this.RaiseAndSetIfChanged(ref isVisible, value);
     }
+
+    private bool isVisible;
 
     public bool IsEnabled
     {
-      get { return isEnabled; }
-      set
-      {
-        isEnabled = value;
-        OnPropertyChanged();
-      }
+      get => isEnabled;
+      set => this.RaiseAndSetIfChanged(ref isEnabled, value);
     }
+
+    private bool isEnabled;
 
     public bool IsDefault
     {
-      get { return isDefault; }
-      set
-      {
-        isDefault = value;
-        OnPropertyChanged();
-      }
+      get => isDefault;
+      set => this.RaiseAndSetIfChanged(ref isDefault, value);
     }
+
+    private bool isDefault;
 
     public bool IsCancel
     {
-      get { return isCancel; }
-      set
-      {
-        isCancel = value;
-        OnPropertyChanged();
-      }
+      get => isCancel;
+      set => this.RaiseAndSetIfChanged(ref isCancel, value);
     }
 
-    public event EventHandler<ButtonArgs> OnClick;
+    private bool isCancel;
 
-    public event EventHandler<ButtonArgs> Clicked;
+    public IObservable<ButtonArgs> OnClick => onClickSubject;
+    public IObservable<ButtonArgs> Clicked => clickedSubject;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-      if (propertyName == nameof(IsVisible) || propertyName == nameof(IsEnabled))
-        CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-    }
+    private readonly Subject<ButtonArgs> onClickSubject;
+    private readonly Subject<ButtonArgs> clickedSubject;
 
     #endregion
 
@@ -90,11 +68,16 @@ namespace Dialogs.Buttons
     public void Execute(object parameter)
     {
       var buttonArgs = new ButtonArgs(this);
-      OnClick?.Invoke(this, buttonArgs);
-      Clicked?.Invoke(this, buttonArgs);
+      onClickSubject?.OnNext(buttonArgs);
+      clickedSubject?.OnNext(buttonArgs);
     }
 
     public event EventHandler CanExecuteChanged;
+
+    protected virtual void OnCanExecuteChanged()
+    {
+      CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+    }
 
     #endregion
 
@@ -134,7 +117,8 @@ namespace Dialogs.Buttons
     {
       IsEnabled = true;
       IsVisible = true;
+      onClickSubject = new Subject<ButtonArgs>();
+      clickedSubject = new Subject<ButtonArgs>();
     }
-
   }
 }

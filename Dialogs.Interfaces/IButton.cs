@@ -16,9 +16,9 @@ namespace Dialogs
 
     bool IsCancel { get; set; }
 
-    event EventHandler<ButtonArgs> OnClick;
+    IObservable<ButtonArgs> OnClick { get; }
 
-    event EventHandler<ButtonArgs> Clicked;
+    IObservable<ButtonArgs> Clicked { get; }
   }
 
   public class ButtonArgs

@@ -2,4 +2,4 @@
 
 ## Dialogs
   
-  Simple library to show WPF dialogs.
+  Simple library to show dialogs.
