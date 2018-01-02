@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -24,38 +25,79 @@ namespace Dialogs.Avalonia.Example
 
     static void Main(string[] args)
     {
-      try
+      AppBuilder.Configure<App>()
+          .UsePlatformDetect()
+          .SetupWithoutStarting();
+
+      var selector = new Dialog();
+      selector.Title = "Select dialog";
+      selector.Description = "Some different dialogs:";
+      var all = selector.Buttons.AddButton("All controls");
+      all.OnClick.Subscribe(a =>
       {
-        AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .SetupWithoutStarting();
+        a.CloseAfterClick = false;
+        SimpleDialog();
+      });
 
-        var selector = new Dialog();
-        selector.Title = "Select dialog";
-        selector.Description = "Some different dialogs:";
-        var all = selector.Buttons.AddButton("All controls");
-        all.OnClick.Subscribe(a =>
-        {
-          a.CloseAfterClick = false;
-          SimpleDialog();
-        });
-
-        var strings = selector.Buttons.AddButton("Strings");
-        strings.OnClick.Subscribe(a =>
-        {
-          a.CloseAfterClick = false;
-          StringDialog();
-        });
-
-        selector.Buttons.AddButton("Exit");
-
-        selector.Show();
-        throw new NotImplementedException();
-      }
-      catch (Exception ex)
+      var strings = selector.Buttons.AddButton("Strings");
+      strings.OnClick.Subscribe(a =>
       {
-        Logger.Error("MainLoop", ex, "Binding produced invalid value for {$ex}", ex);
-      }
+        a.CloseAfterClick = false;
+        StringDialog();
+      });
+
+      var rci = selector.Buttons.AddButton("Retry-Cont-Ignore");
+      rci.OnClick.Subscribe(a =>
+      {
+        a.CloseAfterClick = false;
+        RetryContinueIgnoreDialog();
+      });
+
+      selector.Buttons.AddButton("Exit");
+
+      selector.Show();
+    }
+
+    private static void RetryContinueIgnoreDialog()
+    {
+      var dialog = new Dialog();
+      dialog.Title = "Error";
+      dialog.Description = "  -  When in compatibility mode, and the JavaFX/SWT primary windows are closed, we want to make sure that the SystemTray is also \r\n    closed.  Additionally, when using the Swing tray type, Windows does not always remove the tray icon if the JVM is stopped, \r\n    and this makes sure that the tray is also removed from the notification area. \r\n    This property is available to disable this functionality in situations where you don\'t want this to happen.\r\n    This is an advanced feature, and it is recommended to leave as true.";
+      // dialog.Description = "  -  When in compatibility mode, and the JavaFX/SWT primary windows are closed, we want to make sure that the SystemTray is also closed.  Additionally, when using the Swing tray type, Windows does not always remove the tray icon if the JVM is stopped, and this makes sure that the tray is also removed from the notification area. This property is available to disable this functionality in situations where you don\'t want this to happen. This is an advanced feature, and it is recommended to leave as true.";
+      var progress = new ProgressControl();
+      progress.MaxValue = 100;
+      progress.Changed
+        .Where(p => p.PropertyName == nameof(progress.Value) && progress.Value >= progress.MaxValue)
+        .Subscribe(a =>
+      {
+        foreach (var button in dialog.Buttons.Where(b => !b.IsCancel))
+          button.IsEnabled = false;
+      });
+      dialog.Controls.Add(progress);
+
+      var retry = dialog.Buttons.AddButton("Retry");
+      retry.OnClick.Subscribe(a =>
+      {
+        a.CloseAfterClick = false;
+      });
+
+      var cont = dialog.Buttons.AddButton("Continue");
+      cont.OnClick.Subscribe(a =>
+      {
+        a.CloseAfterClick = false;
+        progress.Value += 5;
+      });
+
+      dialog.Buttons.AddButton("Ignore")
+        .OnClick.Subscribe(a =>
+      {
+        a.CloseAfterClick = false;
+        progress.Value += 20;
+      });
+
+      dialog.Buttons.AddCancel();
+
+      dialog.Show();
     }
 
     private static void StringDialog()
@@ -74,13 +116,13 @@ namespace Dialogs.Avalonia.Example
       dialog.Buttons.AddCancel();
       dialog.Title = "Example";
       dialog.Description = "Just do it!";
-      var control = new StringControl() {Name = "Test", IsRequired = true};
+      var control = new StringControl() { Name = "Test", IsRequired = true };
       dialog.Controls.Add(control);
 
-      var boolC = new BoolControl() {Name = "Checkbox", Value = true};
+      var boolC = new BoolControl() { Name = "Checkbox", Value = true };
       dialog.Controls.Add(boolC);
 
-      var p = new ProgressControl() {Name = "Ppp", Value = 66, MinValue = 0, MaxValue = 666};
+      var p = new ProgressControl() { Name = "Ppp", Value = 66, MinValue = 0, MaxValue = 666 };
       dialog.Controls.Add(p);
 
       Task.Run(() =>
@@ -93,7 +135,7 @@ namespace Dialogs.Avalonia.Example
         }
       });
 
-      var custom = new Buttons.Button() {IsDefault = true, Name = "TRA TA TA"};
+      var custom = new Buttons.Button() { IsDefault = true, Name = "TRA TA TA" };
       custom.OnClick.Subscribe(a =>
       {
         a.CloseAfterClick = false;
