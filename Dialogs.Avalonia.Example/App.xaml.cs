@@ -37,7 +37,7 @@ namespace Dialogs.Avalonia.Example
         var control = new StringControl() { Name = "Test", IsRequired = true };
         dialog.Controls.Add(control);
 
-        var boolC = new BoolControl() { Name = "Galochka", Value = true };
+        var boolC = new BoolControl() { Name = "Checkbox", Value = true };
         dialog.Controls.Add(boolC);
 
         var p = new ProgressControl() { Name = "Ppp", Value = 66, MinValue = 0, MaxValue = 666 };

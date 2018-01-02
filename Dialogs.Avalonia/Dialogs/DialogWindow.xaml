@@ -2,6 +2,7 @@
         xmlns:b="clr-namespace:Dialogs.Buttons;assembly=Dialogs.Avalonia"
         xmlns:c="clr-namespace:Dialogs.Controls;assembly=Dialogs.Avalonia"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        SizeToContent="WidthAndHeight"
         Title="{Binding Title}">
   <Window.DataTemplates>
     <DataTemplate DataType="{x:Type b:Button}">

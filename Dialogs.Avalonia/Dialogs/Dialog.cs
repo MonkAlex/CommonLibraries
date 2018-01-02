@@ -7,33 +7,25 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using Dialogs.Avalonia.Dialogs;
 using Dialogs.Buttons;
+using ReactiveUI;
 
 namespace Dialogs.Avalonia
 {
-  public abstract class Dialog : IDialog
+  public abstract class Dialog : ReactiveObject, IDialog
   {
     private string title;
     private string description;
-    public event PropertyChangedEventHandler PropertyChanged;
 
     public string Title
     {
-      get { return title; }
-      set
-      {
-        title = value;
-        OnPropertyChanged();
-      }
+      get => title;
+      set => this.RaiseAndSetIfChanged(ref title, value);
     }
 
     public string Description
     {
-      get { return description; }
-      set
-      {
-        description = value;
-        OnPropertyChanged();
-      }
+      get => description;
+      set => this.RaiseAndSetIfChanged(ref description, value);
     }
 
     public IButtonCollection Buttons { get; }
@@ -62,11 +54,6 @@ namespace Dialogs.Avalonia
     {
       Buttons = new ButtonCollection();
       Controls = new List<IDialogControl>();
-    }
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
   }
 }
