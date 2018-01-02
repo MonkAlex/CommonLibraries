@@ -13,6 +13,7 @@ namespace Dialogs
     IObservable<ButtonArgs> Clicked { get; }
 
     void AddButton(IButton button);
+    IButton AddButton(string buttonName);
     void AddOkCancel();
     void AddCancel();
   }

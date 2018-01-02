@@ -11,7 +11,7 @@ using ReactiveUI;
 
 namespace Dialogs.Avalonia
 {
-  public abstract class Dialog : ReactiveObject, IDialog
+  public class Dialog : ReactiveObject, IDialog
   {
     private string title;
     private string description;
@@ -50,7 +50,7 @@ namespace Dialogs.Avalonia
       return dialog.ResultButton;
     }
 
-    protected Dialog()
+    public Dialog()
     {
       Buttons = new ButtonCollection();
       Controls = new List<IDialogControl>();

@@ -10,24 +10,25 @@
               Command="{Binding}"
               IsDefault="{Binding IsDefault}"
               IsVisible="{Binding IsVisible}"
-              IsEnabled="{Binding IsEnabled}"/>
+              IsEnabled="{Binding IsEnabled}"
+              Margin="5"/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type c:StringControl}">
-      <Grid ColumnDefinitions="*,Auto,2*">
-        <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+      <Grid ColumnDefinitions="*,Auto,2*" Margin="10">
+        <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center"/>
         <TextBlock Grid.Column="1" Text="*" IsVisible="{Binding IsRequired}" Foreground="Red"/>
         <TextBox Grid.Column="2" Text="{Binding Value}"/>
       </Grid>
     </DataTemplate>
     <DataTemplate DataType="{x:Type c:BoolControl}">
-      <CheckBox IsChecked="{Binding Value}" Content="{Binding Name}"/>
+      <CheckBox Margin="10" IsChecked="{Binding Value}" Content="{Binding Name}"/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type c:ProgressControl}">
-      <ProgressBar Value="{Binding Value}" Minimum="{Binding MinValue}" Maximum="{Binding MaxValue}"/>
+      <ProgressBar Margin="10" Value="{Binding Value}" Minimum="{Binding MinValue}" Maximum="{Binding MaxValue}"/>
     </DataTemplate>
   </Window.DataTemplates>
   <Grid RowDefinitions="Auto,*,Auto">
-    <TextBlock Grid.Row="0" Text="{Binding Description}"/>
+    <TextBlock Grid.Row="0" Text="{Binding Description}" Margin="10"/>
     <ItemsControl Grid.Row="1" Items="{Binding Controls}"/>
     <ItemsControl Grid.Row="2"
                   HorizontalAlignment="Right"

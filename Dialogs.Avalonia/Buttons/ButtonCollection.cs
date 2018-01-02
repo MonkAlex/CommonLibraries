@@ -52,6 +52,14 @@ namespace Dialogs.Buttons
       buttons.Add(button);
     }
 
+    public IButton AddButton(string buttonName)
+    {
+      var newButton = new Button();
+      newButton.Name = buttonName;
+      this.AddButton(newButton);
+      return newButton;
+    }
+
     public void AddOkCancel()
     {
       AddButton(DefaultButtons.OkButton);
