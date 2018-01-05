@@ -17,5 +17,9 @@ namespace Dialogs
     IButton Show();
 
     Task<IButton> ShowAsync();
+
+    void Close();
+
+    Task CloseAsync();
   }
 }

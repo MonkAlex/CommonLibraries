@@ -2,9 +2,9 @@
 {
   public static class DefaultButtons
   {
-    public static Button OkButton { get; } = new OkButtonImpl();
+    public static Button OkButton => new OkButtonImpl();
 
-    public static Button CancelButton { get; } = new CancelButtonImpl();
+    public static Button CancelButton => new CancelButtonImpl();
 
     private class OkButtonImpl : Button
     {

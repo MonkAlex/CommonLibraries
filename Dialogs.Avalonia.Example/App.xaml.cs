@@ -53,9 +53,41 @@ namespace Dialogs.Avalonia.Example
         RetryContinueIgnoreDialog();
       });
 
+      var autoclose = selector.Buttons.AddButton("Autoclose");
+      autoclose.OnClick.Subscribe(a =>
+      {
+        a.CloseAfterClick = false;
+        AutoCloseDialog();
+      });
+
       selector.Buttons.AddButton("Exit");
 
       selector.Show();
+    }
+
+    private static void AutoCloseDialog()
+    {
+      var dialog = new Dialog();
+      var progress = new ProgressControl
+      {
+        MinValue = 0,
+        Value = 0,
+        MaxValue = 100
+      };
+      dialog.Controls.Add(progress);
+      Task.Run(async () =>
+      {
+        while (progress.Value < progress.MaxValue)
+        {
+          await Task.Delay(50);
+          progress.Value += 1;
+          dialog.Description = $"Do {progress.Value} of {progress.MaxValue}";
+        }
+      });
+      progress.Changed
+        .Where(p => progress.Value >= progress.MaxValue)
+        .Subscribe(async agrs => await dialog.CloseAsync());
+      dialog.Show();
     }
 
     private static void RetryContinueIgnoreDialog()
@@ -63,7 +95,6 @@ namespace Dialogs.Avalonia.Example
       var dialog = new Dialog();
       dialog.Title = "Error";
       dialog.Description = "  -  When in compatibility mode, and the JavaFX/SWT primary windows are closed, we want to make sure that the SystemTray is also \r\n    closed.  Additionally, when using the Swing tray type, Windows does not always remove the tray icon if the JVM is stopped, \r\n    and this makes sure that the tray is also removed from the notification area. \r\n    This property is available to disable this functionality in situations where you don\'t want this to happen.\r\n    This is an advanced feature, and it is recommended to leave as true.";
-      // dialog.Description = "  -  When in compatibility mode, and the JavaFX/SWT primary windows are closed, we want to make sure that the SystemTray is also closed.  Additionally, when using the Swing tray type, Windows does not always remove the tray icon if the JVM is stopped, and this makes sure that the tray is also removed from the notification area. This property is available to disable this functionality in situations where you don\'t want this to happen. This is an advanced feature, and it is recommended to leave as true.";
       var progress = new ProgressControl();
       progress.MaxValue = 100;
       progress.Changed

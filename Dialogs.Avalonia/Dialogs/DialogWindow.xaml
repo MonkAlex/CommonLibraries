@@ -30,7 +30,6 @@
   <Grid RowDefinitions="Auto,*,Auto">
     <TextBlock Grid.Row="0" 
                Text="{Binding Description}" 
-               TextWrapping="Wrap"
                Margin="10"/>
     <ItemsControl Grid.Row="1" Items="{Binding Controls}"/>
     <ItemsControl Grid.Row="2"

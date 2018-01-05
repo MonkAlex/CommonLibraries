@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ReactiveUI;
@@ -18,21 +19,19 @@ namespace Dialogs.Avalonia.Dialogs
     public DialogWindow(IDialog dialog) : this()
     {
       DataContext = dialog;
+      var sub = dialog.Buttons.Clicked
+        .Where(b => b.CloseAfterClick)
+        .Subscribe(args =>
+        {
+          ResultButton = args.Button;
+          Close();
+        });
       Closed += (sender, args) =>
       {
+        sub?.Dispose();
         if (ResultButton == null)
           ResultButton = dialog.Buttons.CancelButton;
       };
-      dialog.Buttons.Clicked.Subscribe(args => ButtonsOnClicked(this, args));
-    }
-
-    private void ButtonsOnClicked(object sender, ButtonArgs buttonArgs)
-    {
-      if (buttonArgs.CloseAfterClick)
-      {
-        ResultButton = buttonArgs.Button;
-        Close();
-      }
     }
 
     private void InitializeComponent()
