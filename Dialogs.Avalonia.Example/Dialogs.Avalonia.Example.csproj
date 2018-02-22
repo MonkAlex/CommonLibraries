@@ -43,14 +43,14 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <PackageReference Include="Avalonia">
-      <Version>0.5.2-build4416-alpha</Version>
+      <Version>0.6.1</Version>
     </PackageReference>
     <PackageReference Include="Avalonia.Desktop">
-      <Version>0.5.2-build4416-alpha</Version>
+      <Version>0.6.1</Version>
     </PackageReference>
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.5.2-build4416-alpha" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.6.1" />
     <PackageReference Include="Serilog.Sinks.Trace" Version="2.1.0" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.1.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml" />
