@@ -57,6 +57,7 @@
     <Compile Include="Controls\BoolControl.cs" />
     <Compile Include="Controls\ProgressControl.cs" />
     <Compile Include="Controls\StringControl.cs" />
+    <Compile Include="Dialogs\Designer.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>

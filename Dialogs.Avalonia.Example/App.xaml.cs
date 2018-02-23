@@ -17,6 +17,10 @@ namespace Dialogs.Avalonia.Example
   class App : Application
   {
 
+    public static AppBuilder BuildAvaloniaApp()
+      => AppBuilder.Configure<App>()
+        .UsePlatformDetect();
+
     public override void Initialize()
     {
       AvaloniaXamlLoader.Load(this);
@@ -25,9 +29,7 @@ namespace Dialogs.Avalonia.Example
 
     static void Main(string[] args)
     {
-      AppBuilder.Configure<App>()
-          .UsePlatformDetect()
-          .SetupWithoutStarting();
+      BuildAvaloniaApp().SetupWithoutStarting();
 
       var selector = new Dialog();
       selector.Title = "Select dialog";
