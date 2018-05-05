@@ -19,7 +19,8 @@ namespace Dialogs.Avalonia.Example
 
     public static AppBuilder BuildAvaloniaApp()
       => AppBuilder.Configure<App>()
-        .UsePlatformDetect();
+        .UsePlatformDetect()
+        .UseReactiveUI();
 
     public override void Initialize()
     {
