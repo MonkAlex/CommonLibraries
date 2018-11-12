@@ -41,7 +41,7 @@ namespace Dialogs.Avalonia
       {
         var dialog = new DialogWindow(this);
         dialog.Closed += (sender, args) => CloseImpl();
-        DialogTokenSource.Token.Register(() => Dispatcher.UIThread.InvokeAsync(dialog.Close));
+        DialogTokenSource.Token.Register(() => Dispatcher.UIThread.InvokeAsync(() => dialog.Close()));
         dialog.Show();
 
         Dispatcher.UIThread.MainLoop(DialogTokenSource.Token);
@@ -58,7 +58,7 @@ namespace Dialogs.Avalonia
       {
         var dialog = new DialogWindow(this);
         dialog.Closed += (sender, args) => CloseImpl();
-        DialogTokenSource.Token.Register(() => Dispatcher.UIThread.InvokeAsync(dialog.Close));
+        DialogTokenSource.Token.Register(() => Dispatcher.UIThread.InvokeAsync(() => dialog.Close()));
         await dialog.ShowDialog();
 
         return dialog.ResultButton;

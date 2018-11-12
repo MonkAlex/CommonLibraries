@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive.Linq;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ReactiveUI;
 using System.Reactive.Subjects;
+using Avalonia;
 
 namespace Dialogs.Avalonia.Dialogs
 {
@@ -14,6 +16,8 @@ namespace Dialogs.Avalonia.Dialogs
     public DialogWindow()
     {
       this.InitializeComponent();
+      if (Owner == null && WindowStartupLocation == WindowStartupLocation.CenterOwner)
+        Owner = Application.Current.Windows.FirstOrDefault(w => w.IsActive);
     }
 
     public DialogWindow(IDialog dialog) : this()
