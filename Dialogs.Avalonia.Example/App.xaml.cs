@@ -30,7 +30,7 @@ namespace Dialogs.Avalonia.Example
 
     static void Main(string[] args)
     {
-      BuildAvaloniaApp().SetupWithoutStarting();
+      BuildAvaloniaApp().SetExitMode(ExitMode.OnExplicitExit).SetupWithoutStarting();
 
       var selector = new Dialog();
       selector.Title = "Select dialog";

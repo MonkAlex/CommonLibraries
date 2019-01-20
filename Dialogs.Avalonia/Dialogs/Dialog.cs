@@ -44,7 +44,6 @@ namespace Dialogs.Avalonia
         DialogTokenSource.Token.Register(() => Dispatcher.UIThread.InvokeAsync(() => dialog.Close()));
         dialog.Show();
 
-        Dispatcher.UIThread.MainLoop(DialogTokenSource.Token);
         return dialog.ResultButton;
       }
     }
