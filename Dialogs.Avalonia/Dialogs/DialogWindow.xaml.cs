@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using ReactiveUI;
 using System.Reactive.Subjects;
 using Avalonia;
+using Avalonia.Input;
 
 namespace Dialogs.Avalonia.Dialogs
 {
@@ -17,7 +18,19 @@ namespace Dialogs.Avalonia.Dialogs
     {
       this.InitializeComponent();
       if (Owner == null && WindowStartupLocation == WindowStartupLocation.CenterOwner)
-        Owner = Application.Current.Windows.FirstOrDefault(w => w.IsActive);
+      {
+        var owner = Application.Current.Windows.FirstOrDefault(w => w.IsActive);
+        Owner = owner;
+        if (owner != null)
+          this.Icon = owner.Icon;
+      }
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+      base.OnKeyDown(e);
+      if (e.Key == Key.Escape)
+        Close();
     }
 
     public DialogWindow(IDialog dialog) : this()
