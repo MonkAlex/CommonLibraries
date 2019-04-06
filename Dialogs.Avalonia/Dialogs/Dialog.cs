@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Threading;
 using Dialogs.Avalonia.Dialogs;
 using Dialogs.Buttons;
@@ -32,23 +34,6 @@ namespace Dialogs.Avalonia
     public IButtonCollection Buttons { get; }
     public ICollection<IDialogControl> Controls { get; }
 
-    public virtual IButton Show()
-    {
-      if (DialogTokenSource?.IsCancellationRequested == false)
-        throw new InvalidOperationException("Windows already showed.");
-
-      using (DialogTokenSource = new CancellationTokenSource())
-      {
-        var dialog = new DialogWindow(this);
-        dialog.Closed += (sender, args) => CloseImpl();
-        DialogTokenSource.Token.Register(() => Dispatcher.UIThread.InvokeAsync(() => dialog.Close()));
-        dialog.Show();
-
-        Dispatcher.UIThread.MainLoop(DialogTokenSource.Token);
-        return dialog.ResultButton;
-      }
-    }
-
     public virtual async Task<IButton> ShowAsync()
     {
       if (DialogTokenSource?.IsCancellationRequested == false)
@@ -59,15 +44,18 @@ namespace Dialogs.Avalonia
         var dialog = new DialogWindow(this);
         dialog.Closed += (sender, args) => CloseImpl();
         DialogTokenSource.Token.Register(() => Dispatcher.UIThread.InvokeAsync(() => dialog.Close()));
-        await dialog.ShowDialog();
-
+        var owner = Application.Current.Windows.FirstOrDefault(w => w.IsActive);
+        if (owner != null)
+        {
+          await dialog.ShowDialog(owner);
+        }
+        else
+        {
+          dialog.Show();
+          Dispatcher.UIThread.MainLoop(DialogTokenSource.Token);
+        }
         return dialog.ResultButton;
       }
-    }
-
-    public virtual void Close()
-    {
-      this.CloseImpl();
     }
 
     public virtual Task CloseAsync()
@@ -78,9 +66,12 @@ namespace Dialogs.Avalonia
 
     private void CloseImpl()
     {
+      if (DialogTokenSource == null)
+        return;
+
       if (!DialogTokenSource.IsCancellationRequested)
-        DialogTokenSource?.Cancel();
-      DialogTokenSource?.Dispose();
+        DialogTokenSource.Cancel();
+      DialogTokenSource.Dispose();
     }
 
     public Dialog()

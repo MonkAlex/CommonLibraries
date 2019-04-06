@@ -14,11 +14,7 @@ namespace Dialogs
 
     ICollection<IDialogControl> Controls { get; }
 
-    IButton Show();
-
     Task<IButton> ShowAsync();
-
-    void Close();
 
     Task CloseAsync();
   }

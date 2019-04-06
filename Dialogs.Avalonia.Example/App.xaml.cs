@@ -28,7 +28,7 @@ namespace Dialogs.Avalonia.Example
       base.Initialize();
     }
 
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
       BuildAvaloniaApp().SetupWithoutStarting();
 
@@ -65,10 +65,28 @@ namespace Dialogs.Avalonia.Example
 
       selector.Buttons.AddButton("Exit");
 
-      selector.Show();
+      var manyStrings = selector.Buttons.AddButton("many strings");
+      manyStrings.OnClick.Subscribe(a =>
+      {
+        a.CloseAfterClick = false;
+        ShowManyStrings();
+      });
+
+      await selector.ShowAsync();
     }
 
-    private static void AutoCloseDialog()
+    private static async Task ShowManyStrings()
+    {
+      var dialog = new Dialog();
+      for (int i = 0; i < 50; i++)
+      {
+        dialog.Controls.Add(new StringControl(){Name = i.ToString(), Value = (i*2).ToString()});
+      }
+
+      await dialog.ShowAsync();
+    }
+
+    private static async Task AutoCloseDialog()
     {
       var dialog = new Dialog();
       var progress = new ProgressControl
@@ -90,10 +108,10 @@ namespace Dialogs.Avalonia.Example
       progress.Changed
         .Where(p => progress.Value >= progress.MaxValue)
         .Subscribe(async agrs => await dialog.CloseAsync());
-      dialog.Show();
+      await dialog.ShowAsync();
     }
 
-    private static void RetryContinueIgnoreDialog()
+    private static async Task RetryContinueIgnoreDialog()
     {
       var dialog = new Dialog();
       dialog.Title = "Error";
@@ -131,20 +149,20 @@ namespace Dialogs.Avalonia.Example
 
       dialog.Buttons.AddCancel();
 
-      dialog.Show();
+      await dialog.ShowAsync();
     }
 
-    private static void StringDialog()
+    private static async Task StringDialog()
     {
       var dialog = new SimpleDialog();
       dialog.Controls.Add(new StringControl() { Name = "11111111111111111" });
       dialog.Controls.Add(new StringControl() { Name = "1" });
       dialog.Controls.Add(new StringControl() { Name = "12345" });
       dialog.Controls.Add(new StringControl() { Name = "1234567890" });
-      dialog.Show();
+      await dialog.ShowAsync();
     }
 
-    private static void SimpleDialog()
+    private static async Task SimpleDialog()
     {
       var dialog = new SimpleDialog();
       dialog.Buttons.AddCancel();
@@ -178,9 +196,9 @@ namespace Dialogs.Avalonia.Example
         dialog.Buttons.DefaultButton = dialog.Buttons.SingleOrDefault(b => b.Name == "Ok");
       });
       dialog.Buttons.AddButton(custom);
-      var dialogResult = dialog.Show();
+      var dialogResult = await dialog.ShowAsync();
       control.Value = dialogResult.Name;
-      dialog.Show();
+      await dialog.ShowAsync();
     }
   }
 }
