@@ -6,6 +6,8 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Dialogs.Avalonia.Dialogs;
 using Dialogs.Buttons;
@@ -44,7 +46,10 @@ namespace Dialogs.Avalonia
         var dialog = new DialogWindow(this);
         dialog.Closed += (sender, args) => CloseImpl();
         DialogTokenSource.Token.Register(() => Dispatcher.UIThread.InvokeAsync(() => dialog.Close()));
-        var owner = Application.Current.Windows.FirstOrDefault(w => w.IsActive);
+
+        Window owner = null;
+        if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+          owner = lifetime.Windows.FirstOrDefault(w => w.IsActive);
         if (owner != null)
         {
           await dialog.ShowDialog(owner);

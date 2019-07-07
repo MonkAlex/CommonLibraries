@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using ReactiveUI;
 using System.Reactive.Subjects;
 using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 
 namespace Dialogs.Avalonia.Dialogs
@@ -19,7 +20,10 @@ namespace Dialogs.Avalonia.Dialogs
       this.InitializeComponent();
       if (Owner == null && WindowStartupLocation == WindowStartupLocation.CenterOwner)
       {
-        var owner = Application.Current.Windows.FirstOrDefault(w => w.IsActive);
+        Window owner = null;
+        if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+          owner = lifetime.Windows.FirstOrDefault(w => w.IsActive);
+
         Owner = owner;
         if (owner != null)
           this.Icon = owner.Icon;

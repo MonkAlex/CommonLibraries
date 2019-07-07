@@ -9,6 +9,7 @@ using Avalonia.Logging;
 using Avalonia.Logging.Serilog;
 using Avalonia.Themes.Default;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
 using Dialogs.Controls;
 using Serilog;
 
