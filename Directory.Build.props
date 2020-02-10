@@ -1,0 +1,18 @@
+<Project>
+    <PropertyGroup>
+        <Version>0.1.27</Version>
+        <Copyright>Copyright © $([System.DateTime]::Now.Year) MonkAlex</Copyright>
+        <Description>Just create simple dialogs in code.</Description>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Authors>MonkAlex</Authors>
+        <Company>Intruders</Company>
+        <AssemblyCopyright>$(Copyright)</AssemblyCopyright>
+        <PackageProjectUrl>https://github.com/MonkAlex/CommonLibraries</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <PackageTags>avalonia;avaloniaui;dialogs</PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/MonkAlex/CommonLibraries</RepositoryUrl>
+    </PropertyGroup>
+</Project>

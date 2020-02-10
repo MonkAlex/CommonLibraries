@@ -1,22 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6F64AE1E-612E-420E-86AD-415E98EBFC81}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dialogs.Interfaces", "Dialogs.Interfaces\Dialogs.Interfaces.csproj", "{BB4379C0-8BBD-4A03-B7EE-C9F1961E1CD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dialogs.Interfaces", "Dialogs.Interfaces\Dialogs.Interfaces.csproj", "{BB4379C0-8BBD-4A03-B7EE-C9F1961E1CD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dialogs.Avalonia", "Dialogs.Avalonia\Dialogs.Avalonia.csproj", "{A3AA1222-2462-45ED-B4AB-AE4A70E0D859}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dialogs.Avalonia", "Dialogs.Avalonia\Dialogs.Avalonia.csproj", "{A3AA1222-2462-45ED-B4AB-AE4A70E0D859}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dialogs.Avalonia.Example", "Dialogs.Avalonia.Example\Dialogs.Avalonia.Example.csproj", "{FAF5C282-65F5-4EDB-932A-D02F0614A439}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dialogs.Avalonia.Example", "Dialogs.Avalonia.Example\Dialogs.Avalonia.Example.csproj", "{FAF5C282-65F5-4EDB-932A-D02F0614A439}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
