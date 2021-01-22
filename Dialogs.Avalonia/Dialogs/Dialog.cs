@@ -52,7 +52,7 @@ namespace Dialogs.Avalonia
           owner = lifetime.Windows.FirstOrDefault(w => w.IsActive);
         if (owner != null)
         {
-          await dialog.ShowDialog(owner);
+          await dialog.ShowDialog(owner).ConfigureAwait(true);
         }
         else
         {

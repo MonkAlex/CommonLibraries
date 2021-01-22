@@ -3,15 +3,9 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Diagnostics;
-using Avalonia.Logging;
-using Avalonia.Logging.Serilog;
-using Avalonia.Themes.Default;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using Dialogs.Controls;
-using Serilog;
 
 namespace Dialogs.Avalonia.Example
 {
@@ -73,7 +67,7 @@ namespace Dialogs.Avalonia.Example
         ShowManyStrings();
       });
 
-      await selector.ShowAsync();
+      await selector.ShowAsync().ConfigureAwait(true);
     }
 
     private static async Task ShowManyStrings()
@@ -84,7 +78,7 @@ namespace Dialogs.Avalonia.Example
         dialog.Controls.Add(new StringControl(){Name = i.ToString(), Value = (i*2).ToString()});
       }
 
-      await dialog.ShowAsync();
+      await dialog.ShowAsync().ConfigureAwait(true);
     }
 
     private static async Task AutoCloseDialog()
@@ -101,15 +95,15 @@ namespace Dialogs.Avalonia.Example
       {
         while (progress.Value < progress.MaxValue)
         {
-          await Task.Delay(50);
+          await Task.Delay(50).ConfigureAwait(true);
           progress.Value += 1;
           dialog.Description = $"Do {progress.Value} of {progress.MaxValue}";
         }
       });
       progress.Changed
         .Where(p => progress.Value >= progress.MaxValue)
-        .Subscribe(async agrs => await dialog.CloseAsync());
-      await dialog.ShowAsync();
+        .Subscribe(async agrs => await dialog.CloseAsync().ConfigureAwait(true));
+      await dialog.ShowAsync().ConfigureAwait(true);
     }
 
     private static async Task RetryContinueIgnoreDialog()
@@ -150,7 +144,7 @@ namespace Dialogs.Avalonia.Example
 
       dialog.Buttons.AddCancel();
 
-      await dialog.ShowAsync();
+      await dialog.ShowAsync().ConfigureAwait(true);
     }
 
     private static async Task StringDialog()
@@ -160,7 +154,7 @@ namespace Dialogs.Avalonia.Example
       dialog.Controls.Add(new StringControl() { Name = "1" });
       dialog.Controls.Add(new StringControl() { Name = "12345" });
       dialog.Controls.Add(new StringControl() { Name = "1234567890" });
-      await dialog.ShowAsync();
+      await dialog.ShowAsync().ConfigureAwait(true);
     }
 
     private static async Task SimpleDialog()
@@ -197,9 +191,9 @@ namespace Dialogs.Avalonia.Example
         dialog.Buttons.DefaultButton = dialog.Buttons.SingleOrDefault(b => b.Name == "Ok");
       });
       dialog.Buttons.AddButton(custom);
-      var dialogResult = await dialog.ShowAsync();
+      var dialogResult = await dialog.ShowAsync().ConfigureAwait(true);
       control.Value = dialogResult.Name;
-      await dialog.ShowAsync();
+      await dialog.ShowAsync().ConfigureAwait(true);
     }
   }
 }
